@@ -23,12 +23,35 @@
       </div>
       <div class="settings">
         <div class="settings-head"><h2>Workout setup</h2><span class="settings-note">Adjust any time before you start</span></div>
-        <div class="fields">
-          <div class="field"><label for="rounds">Number of rounds</label><div class="input-row"><input id="rounds" type="number" min="1" max="50" value="8"><span class="unit">rounds</span></div></div>
-          <div class="field"><label for="active">Active interval</label><div class="input-row"><input id="active" type="number" min="1" max="5999" value="30"><span class="unit">seconds</span></div></div>
-          <div class="field"><label for="rest">Rest interval</label><div class="input-row"><input id="rest" type="number" min="1" max="5999" value="15"><span class="unit">seconds</span></div></div>
+        <div class="mode-switch" role="group" aria-label="Timer mode">
+          <button class="mode-button selected" id="intervalModeBtn" type="button" aria-pressed="true">Intervals</button>
+          <button class="mode-button" id="pyramidModeBtn" type="button" aria-pressed="false">Pyramid</button>
+          <button class="mode-button" id="emomModeBtn" type="button" aria-pressed="false">EMOM</button>
         </div>
-        <div class="hint">Each round includes one active interval and one rest interval.</div>
+        <div class="mode-settings" id="intervalSettings">
+          <div class="fields">
+            <div class="field"><label for="rounds">Number of rounds</label><div class="input-row"><input id="rounds" type="number" min="1" max="50" value="8"><span class="unit">rounds</span></div></div>
+            <div class="field"><label for="active">Active interval</label><div class="input-row"><input id="active" type="number" min="1" max="5999" value="30"><span class="unit">seconds</span></div></div>
+            <div class="field"><label for="rest">Rest interval</label><div class="input-row"><input id="rest" type="number" min="1" max="5999" value="15"><span class="unit">seconds</span></div></div>
+          </div>
+          <div class="hint">Each round includes one active interval and one rest interval.</div>
+        </div>
+        <div class="mode-settings" id="pyramidSettings" hidden>
+          <div class="fields">
+            <div class="field"><label for="pyramidMax">Peak duration</label><div class="input-row"><input id="pyramidMax" type="number" min="1" max="5999" value="300"><span class="unit">seconds</span></div></div>
+            <div class="field"><label for="pyramidIncrement">Step increment</label><div class="input-row"><input id="pyramidIncrement" type="number" min="1" max="5999" value="30"><span class="unit">seconds</span></div></div>
+            <div class="field"><label for="pyramidRest">Rest interval</label><div class="input-row"><input id="pyramidRest" type="number" min="1" max="5999" value="15"><span class="unit">seconds</span></div></div>
+          </div>
+          <div class="hint">The timer climbs to the peak, then descends by the same steps. Each step is followed by rest.</div>
+        </div>
+        <div class="mode-settings" id="emomSettings" hidden>
+          <div class="fields">
+            <div class="field"><label for="emomDuration">Total duration</label><div class="input-row"><input id="emomDuration" type="number" min="1" max="5999" value="20"><span class="unit">minutes</span></div></div>
+            <div class="field"><label for="emomPeriod">Period length</label><div class="input-row"><input id="emomPeriod" type="number" min="1" max="359940" value="30"><span class="unit">seconds</span></div></div>
+            <div class="field"><span class="field-label">Planned periods</span><div class="input-row"><output id="emomPeriodCount">40</output><span class="unit">periods</span></div></div>
+          </div>
+          <div class="hint">Do your reps at each chime; rest for the remainder of each period.</div>
+        </div>
       </div>
     </section>
   </main>
