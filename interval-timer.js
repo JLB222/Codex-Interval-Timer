@@ -1,5 +1,9 @@
 const $ = id => document.getElementById(id);
-    const inputs = { rounds:$('rounds'), active:$('active'), rest:$('rest') };
+    const inputs = { 
+      rounds:$('rounds'), 
+      active:$('active'), 
+      rest:$('rest')
+    };
     let round = 1, phase = 'active', remaining = 30, running = false, finished = false, tick = null;
     const sounds = {
       activeToRest: new Audio('assets/active-to-rest.wav'),
@@ -23,11 +27,36 @@ const $ = id => document.getElementById(id);
       $('startBtn').textContent=finished?'Start again':running?'Pause':'Start workout';
       $('progress').innerHTML=Array.from({length:Math.min(c.rounds,20)},(_,i)=>`<span class="${i<round-1?'done':''}"></span>`).join('');
     }
-    function reset() { clearInterval(tick); tick=null; running=false; finished=false; round=1; phase='active'; remaining=config().active; render(); }
+    function reset() { 
+      clearInterval(tick); 
+      tick=null; 
+      running=false; 
+      finished=false; 
+      round=1; 
+      phase='active'; 
+      remaining=config().active; 
+      render(); 
+    }
     function advance() {
-      if(phase==='active') { phase='rest'; remaining=config().rest; playSound(sounds.activeToRest); }
-      else if(round<config().rounds) { round++; phase='active'; remaining=config().active; playSound(sounds.restToActive); }
-      else { clearInterval(tick); tick=null; running=false; finished=true; remaining=0; playSound(sounds.complete); }
+      if(phase==='active') { 
+        phase='rest'; 
+        remaining=config().rest; 
+        playSound(sounds.activeToRest); 
+      }
+      else if(round<config().rounds) { 
+        round++; 
+        phase='active'; 
+        remaining=config().active; 
+        playSound(sounds.restToActive); 
+      }
+      else { 
+        clearInterval(tick); 
+        tick=null; 
+        running=false; 
+        finished=true; 
+        remaining=0; 
+        playSound(sounds.complete); 
+      }
       render();
     }
     function start() {
