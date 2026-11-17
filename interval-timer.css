@@ -1,0 +1,41 @@
+:root { color-scheme: light; --ink:#18231f; --muted:#77817c; --line:#e3e7e2; --paper:#fbfcf9; --green:#276f50; --green-dark:#1d583f; --mint:#e7f1e9; --orange:#b9623c; --orange-pale:#f8ebe5; }
+    * { box-sizing:border-box }
+    body { margin:0; min-height:100vh; background:#f4f5f1; color:var(--ink); font-family:Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; display:grid; place-items:center; padding:28px 18px; }
+    .app { width:min(100%, 760px); }
+    header { display:flex; justify-content:space-between; align-items:center; margin-bottom:22px; }
+    .brand { font-size:15px; font-weight:750; letter-spacing:-.03em; display:flex; align-items:center; gap:10px; }
+    .brand-mark { width:28px;height:28px;border-radius:9px;background:var(--green);display:grid;place-items:center;color:white;font-size:15px; }
+    .tag { color:var(--muted); font-size:12px; }
+    .card { background:var(--paper); border:1px solid var(--line); border-radius:24px; box-shadow:0 12px 42px #18231f0a; overflow:hidden; }
+    .timer { text-align:center; padding:42px 24px 34px; transition:background .25s; }
+    .timer.rest { background:linear-gradient(180deg,#fffaf7,#fbfcf9 72%); }
+    .phase { display:inline-flex; align-items:center; gap:8px; border-radius:999px; padding:7px 12px; background:var(--mint); color:var(--green-dark); font-size:11px; font-weight:750; letter-spacing:.1em; text-transform:uppercase; }
+    .rest .phase { background:var(--orange-pale); color:var(--orange); }
+    .dot { width:7px;height:7px;border-radius:50%;background:currentColor; }
+    .clock { font-variant-numeric:tabular-nums; font-weight:650; font-size:clamp(76px,17vw,132px); letter-spacing:-.085em; line-height:1.15; margin:12px 0 6px; }
+    .round { color:var(--muted); font-size:14px; }
+    .round strong { color:var(--ink); font-weight:650; }
+    .progress { display:flex; justify-content:center; gap:6px; margin:22px 0 28px; }
+    .progress span { width:22px;height:4px;border-radius:9px;background:#e4e8e3; }
+    .progress span.done { background:var(--green); }
+    .rest .progress span.done { background:var(--orange); }
+    .controls { display:flex; gap:10px; justify-content:center; }
+    button { font:inherit; border:0; cursor:pointer; transition:transform .12s,background .15s; }
+    button:active { transform:scale(.97); }
+    .primary { min-width:148px; border-radius:12px; padding:14px 22px; color:white; background:var(--green); font-size:14px; font-weight:700; }
+    .primary:hover { background:var(--green-dark); }
+    .secondary { border:1px solid var(--line); border-radius:12px; padding:13px 18px; background:white; color:#4e5953; font-size:14px; font-weight:650; }
+    .secondary:hover { background:#f5f7f3; }
+    .settings { border-top:1px solid var(--line); padding:25px 28px 28px; }
+    .settings-head { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:17px; }
+    .settings h2 { font-size:13px; margin:0; letter-spacing:-.01em; }
+    .settings-note { font-size:11px; color:var(--muted); }
+    .fields { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    .field { padding:14px; border:1px solid var(--line); border-radius:14px; background:white; }
+    label { display:block; color:var(--muted); font-size:11px; font-weight:650; margin-bottom:8px; }
+    .input-row { display:flex; align-items:center; gap:7px; }
+    input { min-width:0;width:100%; border:0; outline:0; color:var(--ink); font:650 20px inherit; font-size:20px; font-weight:650; background:transparent; }
+    .unit { color:#a0a8a2; font-size:11px; }
+    .hint { margin-top:14px; font-size:11px; color:var(--muted); text-align:center; }
+    .complete .phase { background:#e9eef5;color:#4c6282; }
+    @media(max-width:560px) { body{padding:14px}.timer{padding:34px 16px 28px}.settings{padding:21px 17px 24px}.fields{grid-template-columns:1fr;gap:9px}.field{display:flex;align-items:center;justify-content:space-between;padding:12px 14px}.field label{margin:0}.input-row{width:116px}.settings-note{display:none}.tag{font-size:11px} }
