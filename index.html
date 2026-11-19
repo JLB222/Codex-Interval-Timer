@@ -28,6 +28,14 @@
           <button class="mode-button" id="pyramidModeBtn" type="button" aria-pressed="false">Pyramid</button>
           <button class="mode-button" id="emomModeBtn" type="button" aria-pressed="false">EMOM</button>
         </div>
+        <div class="wake-option">
+          <label class="wake-label" for="keepScreenAwake">
+            <input id="keepScreenAwake" type="checkbox">
+            <span>Mobile: Keep screen awake during workout</span>
+          </label>
+          <p class="wake-note">The screen stays awake only while a workout is running.</p>
+          <p class="wake-status" id="screenWakeStatus" role="status" aria-live="polite">Screen wake lock is off. Keep an eye on your battery level!</p>
+        </div>
         <div class="mode-settings" id="intervalSettings">
           <div class="fields">
             <div class="field"><label for="rounds">Number of rounds</label><div class="input-row"><input id="rounds" type="number" min="1" max="50" value="8"><span class="unit">rounds</span></div></div>

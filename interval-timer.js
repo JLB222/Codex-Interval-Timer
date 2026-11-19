@@ -1,4 +1,6 @@
 const $ = id => document.getElementById(id);
+const keepScreenAwake = $('keepScreenAwake');
+const screenWakeStatus = $('screenWakeStatus');
 const inputs = {
   rounds: $('rounds'),
   active: $('active'),
@@ -18,6 +20,8 @@ let emomPeriod = 1;
 let running = false;
 let finished = false;
 let tick = null;
+let screenWakeLock = null;
+let screenWakeLockRequestId = 0;
 
 const sounds = {
   activeToRest: new Audio('assets/active-to-rest.wav'),
@@ -46,6 +50,78 @@ const format = seconds => `${String(Math.floor(seconds / 60)).padStart(2, '0')}:
 function playSound(sound) {
   sound.currentTime = 0;
   sound.play().catch(() => {});
+}
+
+function releaseScreenWakeLock() {
+  screenWakeLockRequestId++;
+  const lock = screenWakeLock;
+  screenWakeLock = null;
+  if (lock && !lock.released) lock.release().catch(() => {});
+}
+
+function setScreenWakeStatus(message) {
+  screenWakeStatus.textContent = message;
+}
+
+async function syncScreenWakeLock() {
+  if (!keepScreenAwake.checked) {
+    releaseScreenWakeLock();
+    setScreenWakeStatus('Screen wake lock is off.');
+    return;
+  }
+
+  if (!('wakeLock' in navigator)) {
+    releaseScreenWakeLock();
+    setScreenWakeStatus('Screen wake lock is not supported in this browser.');
+    return;
+  }
+
+  if (!running || finished) {
+    releaseScreenWakeLock();
+    setScreenWakeStatus('Enabled. The screen will stay awake only while a workout is running.');
+    return;
+  }
+
+  if (document.visibilityState !== 'visible') return;
+  if (screenWakeLock && !screenWakeLock.released) {
+    setScreenWakeStatus('The screen will stay awake while this workout is running.');
+    return;
+  }
+
+  const requestId = ++screenWakeLockRequestId;
+  try {
+    const lock = await navigator.wakeLock.request('screen');
+    if (
+      requestId !== screenWakeLockRequestId ||
+      !keepScreenAwake.checked ||
+      !running ||
+      finished ||
+      document.visibilityState !== 'visible'
+    ) {
+      await lock.release();
+      return;
+    }
+
+    screenWakeLock = lock;
+    setScreenWakeStatus('The screen will stay awake while this workout is running.');
+    lock.addEventListener('release', () => {
+      if (screenWakeLock !== lock) return;
+      screenWakeLock = null;
+      if (keepScreenAwake.checked && running && !finished) {
+        setScreenWakeStatus(document.visibilityState === 'hidden'
+          ? 'Screen lock paused while you are away; it will be requested again when you return.'
+          : 'The phone released the screen lock. Check battery saver or screen timeout settings.');
+      } else if (keepScreenAwake.checked) {
+        setScreenWakeStatus('Enabled. The screen will stay awake only while a workout is running.');
+      } else {
+        setScreenWakeStatus('Screen wake lock is off.');
+      }
+    });
+  } catch {
+    if (requestId === screenWakeLockRequestId) {
+      setScreenWakeStatus('Could not keep the screen awake. The browser or phone may have denied the request.');
+    }
+  }
 }
 
 function activeSteps() {
@@ -115,6 +191,7 @@ function reset() {
     remaining = activeSteps()[0];
   }
   render();
+  void syncScreenWakeLock();
 }
 
 function advance() {
@@ -135,6 +212,7 @@ function advance() {
     remaining = 0;
     playSound(sounds.complete);
   }
+  if (finished) void syncScreenWakeLock();
   render();
 }
 
@@ -144,11 +222,13 @@ function start() {
     clearInterval(tick);
     tick = null;
     running = false;
+    void syncScreenWakeLock();
     render();
     return;
   }
   running = true;
   render();
+  void syncScreenWakeLock();
   tick = setInterval(() => {
     if (mode === 'emom') {
       if (remaining > 0) remaining--;
@@ -160,6 +240,7 @@ function start() {
         finished = true;
         remaining = 0;
         playSound(sounds.complete);
+        void syncScreenWakeLock();
       } else if (remaining === 0) {
         emomPeriod++;
         remaining = Math.min(emomConfig().period, totalRemaining);
@@ -196,6 +277,13 @@ $('resetBtn').addEventListener('click', reset);
 $('intervalModeBtn').addEventListener('click', () => setMode('intervals'));
 $('pyramidModeBtn').addEventListener('click', () => setMode('pyramid'));
 $('emomModeBtn').addEventListener('click', () => setMode('emom'));
+keepScreenAwake.addEventListener('change', () => { void syncScreenWakeLock(); });
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && running && keepScreenAwake.checked) {
+    if (screenWakeLock?.released) screenWakeLock = null;
+    void syncScreenWakeLock();
+  }
+});
 
 Object.entries(inputs).forEach(([name, input]) => {
   input.addEventListener('change', () => {

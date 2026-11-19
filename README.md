@@ -29,6 +29,7 @@ The planned period count rounds up. If the total duration is not evenly divisibl
 - **Start workout** starts or resumes the timer; while running, the button becomes **Pause**.
 - **Reset** returns the current mode to its starting values.
 - Changing modes resets the timer. Each mode keeps its own settings.
+- **Keep screen awake during workout** is optional. When enabled, it prevents supported mobile browsers from turning off the screen while a workout is running. It releases on pause, reset, and completion, and can use extra battery.
 - A sound plays when intervals switch between active and rest, at EMOM period boundaries, and when a workout completes.
 
 The original sound effects are dedicated to the public domain under CC0 1.0. See [SOUND_ASSETS.md](SOUND_ASSETS.md) for details.

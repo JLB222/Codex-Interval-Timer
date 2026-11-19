@@ -236,6 +236,52 @@ button:active {
   outline-offset: 2px;
 }
 
+.wake-option {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: white;
+}
+
+.wake-label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.wake-label input {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  margin: 0;
+  accent-color: var(--green);
+}
+
+.wake-label input:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.wake-note,
+.wake-status {
+  margin: 0 0 0 27px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.wake-status {
+  min-height: 1.45em;
+}
+
 .settings h2 {
   font-size: 13px;
   margin: 0;
